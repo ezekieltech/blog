@@ -57,7 +57,7 @@ SECRET_KEY = env('SECRET_KEY')
 if DEBUG:
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
-ALLOWED_HOSTS = ['localhost','127.0.0.1','3.149.237.160']
+ALLOWED_HOSTS = ['localhost','127.0.0.1','18.191.11.26']
 
 
 # Application definition
@@ -82,7 +82,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'whitenoise.runserver_nostatic',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
