@@ -1,0 +1,27 @@
+{% extends 'index.html' %}
+{% load static%}
+{% block page_heading %}
+<h3>{{department.name}}</h3>
+
+   <p><small>
+       {{department.sales_point}}
+
+       </small>
+   </p>
+   Testing: {{context}}
+{% endblock %}
+Testing: {{context}}
+<h2>Testing</h2>
+{% for post in department.post %}
+<div class="card mb-4">
+    <div class="card-body">
+        Testing: {{post.title}}
+        <p class="card-department h6">{{ post.department}} | {{ post.stage}} </p>
+        <h2 class="card-title">{{ post.title }}</h2>
+
+        <p class="card-text text-muted h6">{{ post.author }} | {{ post.created_on}} </p>
+        <p class="card-text">{{post.content|slice:":200" }}</p>
+        <a href="{% url 'post_detail' post.slug  %}" class="btn">Read More &rarr;</a>
+    </div>
+</div>
+{% endfor %}
