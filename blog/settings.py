@@ -32,12 +32,6 @@ environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 
 TEMPLATES_DIR = os.path.join(BASE_DIR, 'templates')
 
-# root to the media files
-MEDIA_URL = "/media/"
-
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticrootfiles')
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
@@ -77,7 +71,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'ezekielpost.apps.EzekielpostConfig',
-    'tinymce'
+    'tinymce',
+    'storages'
 ]
 
 MIDDLEWARE = [
@@ -201,20 +196,51 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
-STATIC_URL = '/static/'
+# STATIC_URL = '/static/'
+
+# STATICFILES_DIRS = [
+#     os.path.join(BASE_DIR, "blog/static"),
+# ]
+
+# # root to the media files
+# MEDIA_URL = "/media/"
+
+# MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+# STATIC_ROOT = os.path.join(BASE_DIR, 'staticrootfiles')
+
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
+
+USE_S3 = env('USE_S3') == 'TRUE'
+print(USE_S3)
+
+if USE_S3:
+    # aws settings
+    AWS_ACCESS_KEY_ID = env('AWS_ACCESS_KEY_ID')
+    AWS_SECRET_ACCESS_KEY = env('AWS_SECRET_ACCESS_KEY')
+    AWS_STORAGE_BUCKET_NAME = env('AWS_STORAGE_BUCKET_NAME')
+    AWS_DEFAULT_ACL =  env('AWS_DEFAULT_ACL')
+    AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
+    AWS_S3_OBJECT_PARAMETERS = {'CacheControl': 'max-age=86400'}
+    # AWS_S3_SIGNATURE_NAME = env('AWS_S3_SIGNATURE_NAME')
+    # AWS_S3_REGION_NAME = env('AWS_S3_REGION_NAME')
+    # AWS_S3_FILE_OVERWRITE = env('AWS_S3_FILE_OVERWRITE')
+    # s3 static settings
+    AWS_LOCATION = 'static'
+    STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{AWS_LOCATION}/'
+    STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+    # AWS_S3_VERITY = env('AWS_S3_VERITY')
+    # DEFAULT_FILE_STORAGE = env('DEFAULT_FILE_STORAGE')
+    # AWS_QUERYSTRING_AUTH=env('AWS_QUERYSTRING_AUTH')
+    # DEFAULT_FILE_STORAGE = 'blog.storage_backends.MediaStorage'
+else:
+    STATIC_URL = '/static/'
+    STATIC_ROOT = os.path.join(BASE_DIR, 'staticrootfiles')
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "blog/static"),
 ]
 
-DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
-
-AWS_ACCESS_KEY_ID = env('AWS_ACCESS_KEY_ID')
-AWS_SECRET_ACCESS_KEY = env('AWS_SECRET_ACCESS_KEY')
-AWS_STORAGE_BUCKET_NAME = env('AWS_STORAGE_BUCKET_NAME')
-AWS_S3_SIGNATURE_NAME = env('AWS_S3_SIGNATURE_NAME')
-AWS_S3_REGION_NAME = env('AWS_S3_REGION_NAME')
-AWS_S3_FILE_OVERWRITE = env('AWS_S3_FILE_OVERWRITE')
-AWS_DEFAULT_ACL =  env('AWS_DEFAULT_ACL')
-AWS_S3_VERITY = env('AWS_S3_VERITY')
-DEFAULT_FILE_STORAGE = env('DEFAULT_FILE_STORAGE')
+MEDIA_URL = '/mediafiles/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+    
