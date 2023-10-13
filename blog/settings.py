@@ -57,7 +57,7 @@ SECRET_KEY = env('SECRET_KEY')
 if DEBUG:
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
-ALLOWED_HOSTS = ['localhost','127.0.0.1','18.191.11.26']
+ALLOWED_HOSTS = ['analyticshub.top','localhost','127.0.0.1','18.191.11.26']
 
 
 # Application definition
