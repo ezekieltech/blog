@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 from pathlib import Path
+import logging
 import environ
 import os
 
@@ -76,7 +77,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'ezekielpost.apps.EzekielpostConfig',
-    'tinymce'
+    'tinymce',
+    'storages'
 ]
 
 MIDDLEWARE = [
@@ -163,6 +165,25 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': 'django.log',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['file'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+    },
+}
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
@@ -195,6 +216,6 @@ AWS_STORAGE_BUCKET_NAME = env('AWS_STORAGE_BUCKET_NAME')
 AWS_S3_SIGNATURE_NAME = env('AWS_S3_SIGNATURE_NAME')
 AWS_S3_REGION_NAME = env('AWS_S3_REGION_NAME')
 AWS_S3_FILE_OVERWRITE = env('AWS_S3_FILE_OVERWRITE')
-AWS_DEFAULT_ACL =  env('AWS_DEFAULT_ACL')
+AWS_DEFAULT_ACL =  None
 AWS_S3_VERITY = env('AWS_S3_VERITY')
 DEFAULT_FILE_STORAGE = env('DEFAULT_FILE_STORAGE')
